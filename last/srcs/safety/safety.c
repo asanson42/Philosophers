@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 02:37:29 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 05:49:31 by asanson          ###   ########.fr       */
+/*   Created: 2022/05/27 06:22:08 by asanson           #+#    #+#             */
+/*   Updated: 2022/05/27 06:57:43 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,86 +20,19 @@ void	safe_sleep(t_philo *philo)
 	ft_usleep(1, philo);
 }
 
-void	print_forkstate(t_philo *philo, int state)
-{
-	pthread_mutex_lock(&philo->data->write);
-	if (state == 1)
-		printf("before eat:\n");
-	else if (state == 2)
-		printf("after take fork:\n");
-	else
-		printf("after leave:\n");
-	printf("philo %d right fork: %d\n", philo->n, philo->right.status);
-	printf("philo %d left fork: %d\n\n", philo->n, philo->left->status);
-	pthread_mutex_unlock(&philo->data->write);
-}
-
-void	unlock_one_fork(t_fork *fork)
-{
-	pthread_mutex_lock(&fork->fork);
-	fork->status = 0;
-	pthread_mutex_unlock(&fork->fork);
-}
-
-void	unlock_forks(t_philo *philo)
-{
-	unlock_one_fork(philo->left);
-	unlock_one_fork(&philo->right);
-}
-
-int	ft_take_one_fork(t_fork *fork)
-{
-	pthread_mutex_lock(&fork->fork);
-	if (fork->status == 0)
-	{
-		fork->status = 1;
-		pthread_mutex_unlock(&fork->fork);
-		return (0);
-	}
-	pthread_mutex_unlock(&fork->fork);
-	return (1);
-}
-
-int	check_forks(t_philo *philo, t_fork *left, t_fork *right)
-{
-	check_life(philo);
-	if (check_end(philo) == 1)
-		return (1);
-	if (ft_take_one_fork(left))
-	{
-		usleep(500);
-		return (1);
-	}
-	if (ft_take_one_fork(right))
-	{
-		unlock_one_fork(left);
-		usleep(500);
-		return (1);
-	}
-	return (0);
-}
-
 void	safe_meal(t_philo *philo)
 {
-//	print_forkstate(philo, 1);
-	if (check_forks(philo, philo->left, &philo->right))
+	if (safe_forks(philo, philo->left, &philo->right) == 0)
 		return ;
-//	print_forkstate(philo, 2);
-//	if (verif_left_fork(philo) == 1)
-//		return ;
 	print_philo(philo, philo->n, "has taken a fork");
-	print_philo(philo, philo->n, "has taken a fork");
+	print_philo(philo, philo->n, "has yaken a fork");
 	check_life(philo);
 	if (check_end(philo) == 0)
 		philo->last_eat = ft_get_time();
 	philo->meal++;
 	print_philo(philo, philo->n, "is eating");
 	ft_usleep(philo->data->time_to_eat, philo);
-//	print_philo(philo, philo->n, "ate well");
-	//safe_fork(philo);
-	unlock_forks(philo);
-//	print_philo(philo, philo->n, "safe well");
-//	print_forkstate(philo, 3);
+	safe_unlock_forks(philo);
 	safe_sleep(philo);
 }
 

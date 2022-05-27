@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 02:37:19 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 07:04:19 by asanson          ###   ########.fr       */
+/*   Created: 2022/05/27 06:14:29 by asanson           #+#    #+#             */
+/*   Updated: 2022/05/27 06:21:47 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_free(t_philo *philo)
 		pthread_mutex_destroy(&philo[i++].right.fork);
 	pthread_mutex_destroy(&philo->data->dead);
 	pthread_mutex_destroy(&philo->data->write);
-	pthread_mutex_destroy(&philo->data->eat);
 }
 
 void	ft_launch_philo(t_data *data, int i)
@@ -48,17 +47,13 @@ void	ft_launch(t_data *data)
 	data->t_start = ft_get_time();
 	pthread_mutex_init(&data->write, NULL);
 	pthread_mutex_init(&data->dead, NULL);
-	pthread_mutex_init(&data->eat, NULL);
 	while (i < data->num_of_philo)
 		ft_launch_philo(data, i++);
-	i = 0;
-	while (i < data->num_of_philo)
-	{
+	i = -1;
+	while (++i < data->num_of_philo)
 		pthread_create(&data->philo[i].thread, NULL, &safety, &data->philo[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data->num_of_philo)
-		pthread_join(data->philo[i++].thread, NULL);
+	i = -1;
+	while (++i < data->num_of_philo)
+		pthread_join(data->philo[i].thread, NULL);
 	ft_free(data->philo);
 }

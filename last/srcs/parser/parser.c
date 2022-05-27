@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 02:37:01 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 05:47:21 by asanson          ###   ########.fr       */
+/*   Created: 2022/05/27 06:05:33 by asanson           #+#    #+#             */
+/*   Updated: 2022/05/27 06:13:31 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	ft_check_av(char **av, int ac)
 int	ft_check_init(t_data *data)
 {
 	if (data->num_of_philo <= 0)
-		printf("Error: No Philosophers around the table.\n");
-	else if (data->time_to_die < 0
-		|| data->time_to_eat < 0 || data->time_to_sleep < 0)
-		printf("Error: negative value.\n");
+		printf("Error: No philosopher around the table.\n");
+	else if (data->time_to_die < 0 || data->time_to_eat < 0
+		|| data->time_to_sleep < 0)
+		printf("Error: Negative value.\n");
 	else
 		return (1);
 	return (0);
@@ -62,7 +62,7 @@ int	parser(t_data *data, char **av, int ac)
 		data->num_of_meal = ft_atoi(av[4]);
 		if (data->num_of_meal <= 0)
 		{
-			printf("Error: Wrong amount of meal needed.\n");
+			printf("Error: Wrong amount of meal expected.\n");
 			return (0);
 		}
 	}

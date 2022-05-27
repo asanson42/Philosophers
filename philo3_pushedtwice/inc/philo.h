@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:36:35 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:47:08 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 06:18:06 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_data	t_data;
 
 typedef struct s_fork
 {
-	int				index;
 	int				status;
 	pthread_mutex_t	fork;
 }		t_fork;

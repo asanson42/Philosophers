@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/19 02:37:43 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 05:48:34 by asanson          ###   ########.fr       */
+/*   Created: 2022/05/27 06:38:00 by asanson           #+#    #+#             */
+/*   Updated: 2022/05/27 06:45:33 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ long int	ft_get_time(void)
 
 int	check_end(t_philo *philo)
 {
-	int	i;
+	int	died;
 
 	pthread_mutex_lock(&philo->data->dead);
-	i = philo->data->died;
+	died = philo->data->died;
 	pthread_mutex_unlock(&philo->data->dead);
-	return (i);
+	return(died);
 }
 
 void	print_philo(t_philo *philo, int n, char *str)
@@ -41,7 +41,7 @@ void	print_philo(t_philo *philo, int n, char *str)
 
 void	check_life(t_philo *philo)
 {
-	if ((ft_get_time() - philo->last_eat) > philo->data->time_to_die)
+	if (ft_get_time() - philo->last_eat > philo->data->time_to_die)
 	{
 		print_philo(philo, philo->n, "died");
 		pthread_mutex_lock(&philo->data->dead);
