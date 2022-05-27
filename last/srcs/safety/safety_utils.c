@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/27 06:38:00 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 06:45:33 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 07:18:28 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	check_end(t_philo *philo)
 	pthread_mutex_lock(&philo->data->dead);
 	died = philo->data->died;
 	pthread_mutex_unlock(&philo->data->dead);
-	return(died);
+	return (died);
 }
 
 void	print_philo(t_philo *philo, int n, char *str)
