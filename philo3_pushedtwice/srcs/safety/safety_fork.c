@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 02:45:25 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/26 05:52:14 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:03:40 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	verif_left_fork(t_philo *philo)
 	pthread_mutex_unlock(&next->fork);
 	return (fork);
 }
-*/
+
 int	verif_right_fork(t_philo *philo)
 {
 	int	fork;
@@ -40,7 +40,7 @@ int	verif_right_fork(t_philo *philo)
 	pthread_mutex_unlock(&philo->fork);
 	return (fork);
 }
-/*
+
 int	verif_right_fork(t_philo *philo)
 {
 	int		fork;
@@ -64,7 +64,7 @@ int	verif_right_fork(t_philo *philo)
 	}
 	return (0);
 }
-*/
+
 int	verif_left_fork(t_philo *philo)
 {
 	int	fork;
@@ -87,40 +87,28 @@ int	verif_left_fork(t_philo *philo)
 	}
 	return (fork);
 }
-
+*/
 int	verif_fork(t_philo *philo)
 {
-	int	right_fork;
-	int	left_fork;
-	t_philo	*left_philo;
-	pthread_mutex_t	*philo_fork;
+	int	right_fork = 0;
+	int	left_fork = 0;
 
-	if (philo->n == philo->data->num_of_philo)
-	{
-		left_philo = &philo->data->philo[0];
-		philo_fork = &left_philo->fork;
-	}
-	else
-	{
-		left_philo = &philo->data->philo[philo->n + 1];
-		philo_fork = &left_philo->fork;
-	}
-	pthread_mutex_lock(&philo->fork);
-	right_fork = philo->latch;
+	pthread_mutex_lock(&philo->right.fork);
+	right_fork = philo->right.status;
 	if (right_fork == 1)
 		return (1);
-	philo->latch = 1;
-	pthread_mutex_unlock(&philo->fork);
-	pthread_mutex_lock(philo_fork);
-	left_fork = left_philo->latch;
+	philo->right.status = 1;
+	pthread_mutex_unlock(&philo->right.fork);
+	pthread_mutex_lock(&philo->left->fork);
+	left_fork = philo->left->status;
 	if (left_fork == 0)
-		left_philo->latch = 1;
-	pthread_mutex_unlock(philo_fork);
+		philo->left->status = 1;
+	pthread_mutex_unlock(&philo->left->fork);
 	if (left_fork == 1)
 	{
-		pthread_mutex_lock(&philo->fork);
-		philo->latch = 0;
-		pthread_mutex_unlock(&philo->fork);
+		pthread_mutex_lock(&philo->right.fork);
+		philo->right.status = 0;
+		pthread_mutex_unlock(&philo->right.fork);
 		return (1);
 	}
 	return (0);
@@ -128,16 +116,10 @@ int	verif_fork(t_philo *philo)
 
 void	safe_fork(t_philo *philo)
 {
-	t_philo	*next;
-
-	if (philo->n == philo->data->num_of_philo)
-		next = &philo->data->philo[0];
-	else
-		next = &philo->data->philo[philo->n + 1];
-	pthread_mutex_lock(&next->fork);
-	next->latch = 0;
-	pthread_mutex_unlock(&next->fork);
-	pthread_mutex_lock(&philo->fork);
-	philo->latch = 0;
-	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_lock(&philo->left->fork);
+	philo->left->status = 0;
+	pthread_mutex_unlock(&philo->left->fork);
+	pthread_mutex_lock(&philo->right.fork);
+	philo->right.status = 0;
+	pthread_mutex_unlock(&philo->right.fork);
 }

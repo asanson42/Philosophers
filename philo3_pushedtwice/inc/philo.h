@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:36:35 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/26 05:44:47 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 03:56:36 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,21 @@
 
 typedef struct s_data	t_data;
 
+typedef struct s_fork
+{
+	int				index;
+	int				status;
+	pthread_mutex_t	fork;
+}		t_fork;
+
 typedef struct s_philo
 {
 	int				n;
 	int				meal;
 	long int		last_eat;
-	int				latch;
 	pthread_t		thread;
-	pthread_mutex_t	fork;
+	t_fork			right;
+	t_fork			*left;
 	t_data			*data;
 }			t_philo;
 
