@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:19 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:17:43 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:21:21 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_free(t_philo *philo)
 
 void	ft_launch_philo(t_data *data, int i)
 {
-	pthread_mutex_init(&data->philo[i].right->fork, NULL);
+	pthread_mutex_init(&(data->philo[i].right->fork), NULL);
 	if (data->num_of_philo == 1)
 		data->philo[i].left = NULL;
 	else if (i == data->num_of_philo - 1)
