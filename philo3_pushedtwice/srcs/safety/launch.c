@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:19 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:24:08 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:26:37 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	ft_launch_philo(t_data *data, int i)
 	if (data->num_of_philo == 1)
 		data->philo[i].left = NULL;
 	else if (i == data->num_of_philo - 1)
-		data->philo[i].left = data->philo[0].right;
+		data->philo[i].left = &data->philo[0].right;
 	else
-		data->philo[i].left = data->philo[i + 1].right;
+		data->philo[i].left = &data->philo[i + 1].right;
 	data->philo[i].right.index = i + 1;
 	data->philo[i].right.status = 0;
 	data->philo[i].n = i + 1;

@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 02:45:25 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:25:49 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:28:13 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,14 @@ int	verif_left_fork(t_philo *philo)
 */
 int	verif_fork(t_philo *philo)
 {
-	int	right_fork = 0;
-	int	left_fork = 0;
+	int	right_fork;
+	int	left_fork;
 
 	pthread_mutex_lock(&philo->right.fork);
-	right_fork = &philo->right.status;
+	right_fork = philo->right.status;
 	if (right_fork == 1)
 		return (1);
-	&philo->right.status = 1;
+	philo->right.status = 1;
 	pthread_mutex_unlock(&philo->right.fork);
 	pthread_mutex_lock(&philo->left->fork);
 	left_fork = philo->left->status;
@@ -106,8 +106,8 @@ int	verif_fork(t_philo *philo)
 	pthread_mutex_unlock(&philo->left->fork);
 	if (left_fork == 1)
 	{
-		pthread_mutex_lock(&philo.right.fork);
-		&philo->right.status = 0;
+		pthread_mutex_lock(&philo->right.fork);
+		philo->right.status = 0;
 		pthread_mutex_unlock(&philo->right.fork);
 		return (1);
 	}
@@ -119,7 +119,7 @@ void	safe_fork(t_philo *philo)
 	pthread_mutex_lock(&philo->left->fork);
 	philo->left->status = 0;
 	pthread_mutex_unlock(&philo->left->fork);
-	pthread_mutex_lock(&philo->right->fork);
-	&philo->right.status = 0;
-	pthread_mutex_unlock(&philo->right->fork);
+	pthread_mutex_lock(&philo->right.fork);
+	philo->right.status = 0;
+	pthread_mutex_unlock(&philo->right.fork);
 }
