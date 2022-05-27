@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:29 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:01:32 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:18:10 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	*safety(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->data->num_of_philo == 1)
 	{
-		pthread_mutex_lock(&philo->right.fork);
+		pthread_mutex_lock(&philo->right->fork);
 		print_philo(philo, philo->n, "has taken a fork");
 		ft_usleep(philo->data->time_to_die, philo);
 		print_philo(philo, philo->n, "died");
-		pthread_mutex_unlock(&philo->right.fork);
+		pthread_mutex_unlock(&philo->right->fork);
 		return (NULL);
 	}
 	if (philo->n % 2 != 0)
