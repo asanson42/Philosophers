@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:43 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/25 03:27:56 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 05:02:18 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,16 @@ void	ft_usleep(long int ms, t_philo *philo)
 	time = ft_get_time();
 	while (ft_get_time() - time < ms)
 	{
+//		printf("(%ld ms) actual_time\n", ft_get_time());
+//		printf("(%ld ms) begin_time\n", time);
+//		printf("(%ld ms) time_to_die\n", ms);
 		check_life(philo);
 		if (check_end(philo) == 1)
 			break ;
 		usleep(100);
 	}
+//	printf("\n\n\n\n\n\n\n\nok\n\n\n\n\n\n\n");
+	check_life(philo);
+	if (check_end(philo) == 1)
+		printf("he's dead.\n");
 }

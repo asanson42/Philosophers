@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:29 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:40:13 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 05:28:34 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,54 @@ void	print_forkstate(t_philo *philo, int state)
 	pthread_mutex_unlock(&philo->data->write);
 }
 
+void	unlock_one_fork(t_fork *fork)
+{
+	pthread_mutex_lock(&fork->fork);
+	fork->status = 0;
+	pthread_mutex_unlock(&fork->fork);
+}
+
+void	unlock_forks(t_philo *philo)
+{
+	unlock_one_fork(philo->left);
+	unlock_one_fork(&philo->right);
+}
+
+int	ft_take_one_fork(t_fork *fork)
+{
+	pthread_mutex_lock(&fork->fork);
+	if (fork->status == 0)
+	{
+		fork->status = 1;
+		pthread_mutex_unlock(&fork->fork);
+		return (0);
+	}
+	pthread_mutex_unlock(&fork->fork);
+	return (1);
+}
+
+int	check_forks(t_philo *philo, t_fork *left, t_fork *right)
+{
+	if (ft_take_one_fork(left))
+	{
+		usleep(500);
+		return (1);
+	}
+	if (ft_take_one_fork(right))
+	{
+		unlock_one_fork(left);
+		usleep(500);
+		return (1);
+	}
+	return (0);
+}
+
 void	safe_meal(t_philo *philo)
 {
-	print_forkstate(philo, 1);
-	if (verif_fork(philo) == 1)
+//	print_forkstate(philo, 1);
+	if (check_forks(philo, philo->left, &philo->right))
 		return ;
-	print_forkstate(philo, 2);
+//	print_forkstate(philo, 2);
 //	if (verif_left_fork(philo) == 1)
 //		return ;
 	print_philo(philo, philo->n, "has taken a fork");
@@ -47,13 +89,14 @@ void	safe_meal(t_philo *philo)
 	check_life(philo);
 	if (check_end(philo) == 0)
 		philo->last_eat = ft_get_time();
-	print_philo(philo, philo->n, "is eating");
 	philo->meal++;
-	printf("1");
+	print_philo(philo, philo->n, "is eating");
 	ft_usleep(philo->data->time_to_eat, philo);
-	printf("2");
-	safe_fork(philo);
-	print_forkstate(philo, 3);
+//	print_philo(philo, philo->n, "ate well");
+	//safe_fork(philo);
+	unlock_forks(philo);
+//	print_philo(philo, philo->n, "safe well");
+//	print_forkstate(philo, 3);
 	safe_sleep(philo);
 }
 

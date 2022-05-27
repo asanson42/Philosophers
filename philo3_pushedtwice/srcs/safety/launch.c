@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:37:19 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:26:37 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:47:58 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_free(t_philo *philo)
 		pthread_mutex_destroy(&philo[i++].right.fork);
 	pthread_mutex_destroy(&philo->data->dead);
 	pthread_mutex_destroy(&philo->data->write);
+	pthread_mutex_destroy(&philo->data->eat);
 }
 
 void	ft_launch_philo(t_data *data, int i)
@@ -48,6 +49,7 @@ void	ft_launch(t_data *data)
 	data->t_start = ft_get_time();
 	pthread_mutex_init(&data->write, NULL);
 	pthread_mutex_init(&data->dead, NULL);
+	pthread_mutex_init(&data->eat, NULL);
 	while (i < data->num_of_philo)
 		ft_launch_philo(data, i++);
 	i = 0;

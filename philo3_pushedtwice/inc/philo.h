@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/19 02:36:35 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:23:45 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 04:47:08 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct	s_data
 	long int		t_start;
 	pthread_mutex_t	write;
 	pthread_mutex_t	dead;
+	pthread_mutex_t	eat;
 	t_philo			*philo;
 };
 

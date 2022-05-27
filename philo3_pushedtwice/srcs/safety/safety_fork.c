@@ -6,7 +6,7 @@
 /*   By: asanson <asanson@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 02:45:25 by asanson           #+#    #+#             */
-/*   Updated: 2022/05/27 04:28:13 by asanson          ###   ########.fr       */
+/*   Updated: 2022/05/27 05:07:44 by asanson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,13 @@ int	verif_fork(t_philo *philo)
 
 void	safe_fork(t_philo *philo)
 {
+	print_philo(philo, philo->n, "trying to safe fork");
 	pthread_mutex_lock(&philo->left->fork);
 	philo->left->status = 0;
 	pthread_mutex_unlock(&philo->left->fork);
+	print_philo(philo, philo->n, "safed left fork");
 	pthread_mutex_lock(&philo->right.fork);
 	philo->right.status = 0;
 	pthread_mutex_unlock(&philo->right.fork);
+	print_philo(philo, philo->n, "safed forks");
 }
